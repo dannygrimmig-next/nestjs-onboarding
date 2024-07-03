@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { RoleOption, User, sampleUsers } from 'data/users';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -16,10 +18,15 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.users.find((user) => user.id === id);
+    const user = this.users.find((user) => user.id === id);
+
+    if (!user) {
+      throw new NotFoundException('User Not Found');
+    }
+    return user;
   }
 
-  create(user: { name: string; email: string; role: RoleOption }) {
+  create(user: CreateUserDto) {
     // get highest id
     const highestId: number = this.users.sort((a, b) => a.id - b.id)[
       this.users.length - 1
@@ -35,10 +42,7 @@ export class UsersService {
     return newUser;
   }
 
-  update(
-    id: number,
-    updatedUser: { name?: string; email?: string; role?: RoleOption },
-  ) {
+  update(id: number, updatedUser: UpdateUserDto) {
     this.users = this.users.map((user) => {
       if (user.id === id) {
         // spread all props of user, and updated user will only update what it contains
