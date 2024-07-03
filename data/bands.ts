@@ -1,6 +1,6 @@
-import { CreateBandDto } from 'src/bands/dto/create-band.dto';
+import { Band } from 'src/bands/dto/create-band.dto';
 
-export const sampleBands: CreateBandDto[] = [
+export const sampleBands: Band[] = [
   {
     id: 1,
     name: 'Tallest Man on Earth',

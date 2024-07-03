@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBandDto } from './dto/create-band.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Band, CreateBandDto } from './dto/create-band.dto';
 import { UpdateBandDto } from './dto/update-band.dto';
 import { sampleBands } from 'data/bands';
 
 @Injectable()
 export class BandsService {
-  private bands: CreateBandDto[] = sampleBands;
+  private bands: Band[] = sampleBands;
 
   create(createBandDto: CreateBandDto) {
     const highestId: number = this.bands.sort((a, b) => a.id - b.id)[
@@ -23,6 +23,10 @@ export class BandsService {
 
   findOne(id: number) {
     const band = this.bands.find((band) => band.id === id);
+
+    if (!band) {
+      throw new NotFoundException('Band Not Found');
+    }
     return band;
   }
 

@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { BandsService } from './bands.service';
 import { CreateBandDto } from './dto/create-band.dto';
@@ -16,7 +18,7 @@ export class BandsController {
   constructor(private readonly bandsService: BandsService) {}
 
   @Post()
-  create(@Body() createBandDto: CreateBandDto) {
+  create(@Body(ValidationPipe) createBandDto: CreateBandDto) {
     return this.bandsService.create(createBandDto);
   }
 
@@ -26,17 +28,20 @@ export class BandsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bandsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.bandsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBandDto: UpdateBandDto) {
-    return this.bandsService.update(+id, updateBandDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateBandDto: UpdateBandDto,
+  ) {
+    return this.bandsService.update(id, updateBandDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bandsService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.bandsService.remove(id);
   }
 }
