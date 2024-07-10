@@ -26,6 +26,10 @@ export class UsersService {
     return user;
   }
 
+  async findOneByUserName(usename: string): Promise<User | undefined> {
+    return this.users.find((user) => user.name === usename);
+  }
+
   create(user: CreateUserDto) {
     // get highest id
     const highestId: number = this.users.sort((a, b) => a.id - b.id)[
