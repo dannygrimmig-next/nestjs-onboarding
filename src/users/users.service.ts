@@ -26,6 +26,10 @@ export class UsersService {
     return user;
   }
 
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    return this.users.find((user) => user.email === email);
+  }
+
   create(user: CreateUserDto) {
     // get highest id
     const highestId: number = this.users.sort((a, b) => a.id - b.id)[
