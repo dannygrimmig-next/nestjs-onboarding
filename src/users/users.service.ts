@@ -26,8 +26,8 @@ export class UsersService {
     return user;
   }
 
-  async findOneByUserName(usename: string): Promise<User | undefined> {
-    return this.users.find((user) => user.name === usename);
+  async findOneByEmail(email: string): Promise<User | undefined> {
+    return this.users.find((user) => user.email === email);
   }
 
   create(user: CreateUserDto) {
